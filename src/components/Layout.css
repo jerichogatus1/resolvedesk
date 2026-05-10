@@ -24,10 +24,28 @@
   position: absolute;
   inset: auto 0 6% 0;
   height: 240px;
-  background: url('../logoResolveDesk.jpg') center bottom / 180px no-repeat;
   opacity: 0.05;
   pointer-events: none;
   filter: saturate(1.1);
+  background:
+    radial-gradient(circle at 50% 42%, rgba(255, 255, 255, 0.12), transparent 32%),
+    radial-gradient(circle at 50% 58%, rgba(14, 165, 233, 0.10), transparent 38%);
+}
+
+.logo-mark {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e2f4ff, #ffffff);
+  color: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 14px 26px rgba(14, 165, 233, 0.16);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  font-size: 16px;
 }
 
 .sidebar-header {
@@ -253,11 +271,13 @@
   bottom: 2%;
   width: min(38vw, 480px);
   height: min(38vw, 480px);
-  background: url('../logoResolveDesk.jpg') center / contain no-repeat;
   opacity: 0.04;
   pointer-events: none;
   z-index: -1;
   animation: logoDrift 26s ease-in-out infinite alternate;
+  background:
+    radial-gradient(circle at 44% 46%, rgba(255, 255, 255, 0.24), transparent 34%),
+    radial-gradient(circle at 56% 54%, rgba(14, 165, 233, 0.18), transparent 40%);
 }
 
 .top-bar {

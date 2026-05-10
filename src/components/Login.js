@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { FiLock, FiMail, FiShield } from 'react-icons/fi';
 import './Auth.css';
-import logo from '../logoResolveDesk.jpg'; // Import the logo
 
 function Login() {
   const [email, setEmail] = useState('');
@@ -33,7 +32,7 @@ function Login() {
       <div className="auth-card">
         <div className="auth-header">
           <div className="logo">
-            <img src={logo} alt="ResolveDesk Logo" className="logo-image" />
+            <div className="logo-mark" aria-hidden="true">RD</div>
             <div className="logo-text">
               <h1>RESOLVEDESK</h1>
               <p>IT SOLUTION FOR BPO</p>

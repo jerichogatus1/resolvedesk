@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import './Auth.css';
-import logo from '../logoResolveDesk.jpg';
 
 function Register() {
   const [formData, setFormData] = useState({
@@ -66,7 +65,7 @@ function Register() {
       <div className="auth-card">
         <div className="auth-header">
           <div className="logo">
-            <img src={logo} alt="ResolveDesk Logo" className="logo-image" />
+            <div className="logo-mark" aria-hidden="true">RD</div>
             <div className="logo-text">
               <h1>RESOLVEDESK</h1>
               <p>IT SOLUTION FOR BPO</p>

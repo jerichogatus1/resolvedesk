@@ -29,11 +29,12 @@
   inset: auto -6% -10% auto;
   width: min(42vw, 560px);
   height: min(42vw, 560px);
-  background: url('../logoResolveDesk.jpg') center / contain no-repeat;
   opacity: 0.08;
-  filter: blur(0.3px);
   transform: rotate(-8deg);
   pointer-events: none;
+  background:
+    radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.28), transparent 35%),
+    radial-gradient(circle at 50% 50%, rgba(14, 165, 233, 0.22), transparent 42%);
 }
 
 @keyframes drift {
@@ -95,13 +96,20 @@
   margin-bottom: 18px;
 }
 
-.auth-header .logo-image {
+.logo-mark {
   width: 68px;
   height: 68px;
   border-radius: 18px;
-  object-fit: cover;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  box-shadow: 0 18px 30px rgba(14, 165, 233, 0.22);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #e2f4ff, #ffffff);
+  color: #0f172a;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  box-shadow: 0 18px 30px rgba(14, 165, 233, 0.16);
+  font-weight: 900;
+  letter-spacing: -0.08em;
+  font-size: 18px;
 }
 
 .auth-header .logo-text h1 {
@@ -313,7 +321,7 @@
     border-radius: 22px;
   }
 
-  .auth-header .logo-image {
+  .logo-mark {
     width: 52px;
     height: 52px;
   }

@@ -10,7 +10,6 @@ import {
   FiSettings 
 } from 'react-icons/fi';
 import './Layout.css';
-import logo from '../logoResolveDesk.jpg'; // Import the logo
 
 function Layout({ children }) {
   const { currentUser, userRole, logout } = useAuth();
@@ -44,7 +43,7 @@ function Layout({ children }) {
         <div className="sidebar-header">
           <div className="logo-container">
             <div className="logo">
-              <img src={logo} alt="ResolveDesk Logo" className="logo-image" />
+              <div className="logo-mark" aria-hidden="true">RD</div>
               <div className="logo-text">
                 <h2>RESOLVEDESK</h2>
                 <p>IT SOLUTION FOR BPO</p>
