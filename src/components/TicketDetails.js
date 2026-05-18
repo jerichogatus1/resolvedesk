@@ -47,6 +47,14 @@ function TicketDetails() {
     }).format(date);
   };
 
+  const formatLabel = (value) =>
+    (value || '')
+      .toString()
+      .split(' ')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+
   useEffect(() => {
     const unsubscribe = onSnapshot(doc(db, 'tickets', id), (ticketDoc) => {
       if (ticketDoc.exists()) {
@@ -93,7 +101,7 @@ function TicketDetails() {
           author: currentUser.name,
           authorId: currentUser.uid,
           authorRole: userRole,
-          timestamp: serverTimestamp(),
+          timestamp: new Date(),
         }),
         updatedAt: serverTimestamp(),
       });
@@ -175,13 +183,13 @@ function TicketDetails() {
             <h1>{ticket.title}</h1>
             <div className="ticket-badges">
               <span className="status-badge" style={{ backgroundColor: getStatusColor(ticket.status) }}>
-                {ticket.status}
+                {formatLabel(ticket.status)}
               </span>
               <span
                 className={`priority-badge priority-${ticket.priority?.toLowerCase() || 'medium'}`}
                 style={{ backgroundColor: getPriorityColor(ticket.priority) }}
               >
-                {ticket.priority}
+                {formatLabel(ticket.priority)}
               </span>
             </div>
           </div>
