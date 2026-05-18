@@ -2,11 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { AuthProvider, useAuth } from './contexts/AuthContext';
 import Login from './components/Login';
+import Home from './components/Home';
 import Dashboard from './components/Dashboard';
 import CreateTicket from './components/CreateTicket';
 import TicketList from './components/TicketList';
 import TicketDetails from './components/TicketDetails';
 import AdminCreateUser from './components/AdminCreateUser';
+import UserAccounts from './components/UserAccounts';
+import ChangePassword from './components/ChangePassword';
 import './App.css';
 
 // Protected Route Component
@@ -15,18 +18,34 @@ function PrivateRoute({ children }) {
   return currentUser ? children : <Navigate to="/login" />;
 }
 
+// IT-only Route Component
+function ITOnlyRoute({ children }) {
+  const { currentUser, userRole } = useAuth();
+  if (!currentUser) return <Navigate to="/login" />;
+  if (userRole !== 'it') return <Navigate to="/create-ticket" />;
+  return children;
+}
+
 function App() {
   return (
     <Router>
       <AuthProvider>
         <Routes>
           <Route path="/login" element={<Login />} />
+          <Route
+            path="/home"
+            element={
+              <PrivateRoute>
+                <Home />
+              </PrivateRoute>
+            }
+          />
           <Route 
             path="/dashboard" 
             element={
-              <PrivateRoute>
+              <ITOnlyRoute>
                 <Dashboard />
-              </PrivateRoute>
+              </ITOnlyRoute>
             } 
           />
           <Route 
@@ -62,14 +81,37 @@ function App() {
             } 
           />
           <Route
+            path="/admin/users"
+            element={
+              <ITOnlyRoute>
+                <UserAccounts />
+              </ITOnlyRoute>
+            }
+          />
+          <Route
             path="/admin"
             element={
+              <ITOnlyRoute>
+                <Navigate to="/admin/users" replace />
+              </ITOnlyRoute>
+            }
+          />
+          <Route 
+            path="/change-password" 
+            element={
               <PrivateRoute>
-                <Navigate to="/tickets" replace />
+                <ChangePassword />
+              </PrivateRoute>
+            } 
+          />
+          <Route
+            path="/"
+            element={
+              <PrivateRoute>
+                <Navigate to="/home" replace />
               </PrivateRoute>
             }
           />
-          <Route path="/" element={<Navigate to="/dashboard" />} />
         </Routes>
       </AuthProvider>
     </Router>

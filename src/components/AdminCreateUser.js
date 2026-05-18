@@ -101,8 +101,9 @@ function AdminCreateUser() {
 
           <form onSubmit={handleSubmit} className="admin-form">
             <div className="form-group">
-              <label>Full Name *</label>
+              <label htmlFor="name">Full Name *</label>
               <input
+                id="name"
                 type="text"
                 name="name"
                 value={formData.name}
@@ -113,8 +114,9 @@ function AdminCreateUser() {
             </div>
 
             <div className="form-group">
-              <label>Email *</label>
+              <label htmlFor="email">Email *</label>
               <input
+                id="email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -125,8 +127,9 @@ function AdminCreateUser() {
             </div>
 
             <div className="form-group">
-              <label>Temporary Password *</label>
+              <label htmlFor="password">Temporary Password *</label>
               <input
+                id="password"
                 type="password"
                 name="password"
                 value={formData.password}
@@ -139,16 +142,16 @@ function AdminCreateUser() {
             </div>
 
             <div className="form-group">
-              <label>Role *</label>
-              <select name="role" value={formData.role} onChange={handleChange} required>
+              <label htmlFor="role">Role *</label>
+              <select id="role" name="role" value={formData.role} onChange={handleChange} required>
                 <option value="bpo">Employee (Can only create tickets)</option>
                 <option value="it">IT Staff (Can view and edit all tickets)</option>
               </select>
             </div>
 
             <div className="form-group">
-              <label>Department *</label>
-              <select name="department" value={formData.department} onChange={handleChange} required>
+              <label htmlFor="department">Department *</label>
+              <select id="department" name="department" value={formData.department} onChange={handleChange} required>
                 <option value="">Select Department</option>
                 {departments.map((dept) => (
                   <option key={dept} value={dept}>

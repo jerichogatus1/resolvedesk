@@ -15,11 +15,11 @@ function Login() {
   async function handleSubmit(e) {
     e.preventDefault();
     
-    try {
+      try {
       setError('');
       setLoading(true);
       await login(email, password);
-      navigate('/dashboard');
+      navigate('/');
     } catch (error) {
       setError('Invalid email or password');
     } finally {
@@ -47,12 +47,13 @@ function Login() {
         
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label>Email Address</label>
+            <label htmlFor="email">Email Address</label>
             <div className="input-with-icon">
               <span className="field-icon" aria-hidden="true">
                 <FiMail />
               </span>
               <input
+                id="email"
                 className="auth-input"
                 type="email"
                 required
@@ -64,12 +65,13 @@ function Login() {
           </div>
           
           <div className="form-group">
-            <label>Password</label>
+            <label htmlFor="password">Password</label>
             <div className="input-with-icon">
               <span className="field-icon" aria-hidden="true">
                 <FiLock />
               </span>
               <input
+                id="password"
                 className="auth-input"
                 type="password"
                 required

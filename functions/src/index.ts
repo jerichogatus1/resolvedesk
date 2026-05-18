@@ -6,7 +6,7 @@ setGlobalOptions({ maxInstances: 10 });
 
 admin.initializeApp();
 
-export const createUserAccount = onCall(async (request) => {
+export const createUserAccount = onCall({ cors: true }, async (request) => {
   const callerEmail = request.auth?.token?.email;
 
   if (!request.auth || callerEmail !== 'master@admin.com') {
@@ -37,5 +37,42 @@ export const createUserAccount = onCall(async (request) => {
   return {
     uid: userRecord.uid,
     email,
+  };
+});
+
+export const resetUserPassword = onCall({ cors: true }, async (request) => {
+  const callerEmail = request.auth?.token?.email;
+
+  if (!request.auth) {
+    throw new HttpsError('unauthenticated', 'Authentication is required.');
+  }
+
+  const callerRecord = await admin.firestore().collection('users').doc(request.auth.uid).get();
+  const callerRole = callerRecord.exists ? callerRecord.data()?.role : null;
+  const isMasterAdmin = callerEmail === 'master@admin.com';
+
+  if (!isMasterAdmin && callerRole !== 'it') {
+    throw new HttpsError('permission-denied', 'Only IT staff or Master Admin can reset passwords.');
+  }
+
+  const { uid } = request.data ?? {};
+  if (!uid) {
+    throw new HttpsError('invalid-argument', 'Target user UID is required.');
+  }
+
+  await admin.auth().updateUser(uid, { password: 'rsd123' });
+
+  await admin.firestore().collection('users').doc(uid).set(
+    {
+      passwordResetAt: admin.firestore.FieldValue.serverTimestamp(),
+      passwordResetBy: callerEmail,
+      temporaryPassword: 'rsd123',
+    },
+    { merge: true }
+  );
+
+  return {
+    uid,
+    temporaryPassword: 'rsd123',
   };
 });

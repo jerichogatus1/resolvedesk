@@ -4,7 +4,6 @@ import { useAuth } from '../contexts/AuthContext';
 import { 
   FiBell,
   FiChevronRight,
-  FiCommand,
   FiCompass,
   FiHome, 
   FiList,

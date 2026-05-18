@@ -51,7 +51,7 @@
   max-width: 460px;
   position: relative;
   z-index: 1;
-  padding: 44px;
+  padding: var(--space-10);
   border-radius: 28px;
   background: rgba(255, 255, 255, 0.96);
   backdrop-filter: blur(16px);
@@ -113,7 +113,7 @@
 }
 
 .auth-header .logo-text h1 {
-  font-size: 28px;
+  font-size: var(--text-h-md);
   font-weight: 800;
   margin: 0;
   letter-spacing: -0.04em;
@@ -132,21 +132,18 @@
 .auth-card h2 {
   margin: 0 0 10px;
   color: #08111f;
-  font-size: 24px;
+  font-size: var(--text-h-md);
   font-weight: 800;
   text-align: center;
-  text-transform: uppercase;
-  letter-spacing: -0.02em;
+  letter-spacing: -0.01em;
 }
 
 .auth-subtitle {
-  color: #64748b;
-  font-size: 14px;
+  color: var(--muted);
+  font-size: var(--text-body-sm);
   text-align: center;
   margin-bottom: 28px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
+  font-weight: 500;
 }
 
 .form-group {
@@ -157,7 +154,7 @@
   display: block;
   margin-bottom: 8px;
   color: #334155;
-  font-weight: 800;
+  font-weight: 700;
   font-size: 12px;
   text-transform: uppercase;
   letter-spacing: 0.08em;
@@ -178,7 +175,7 @@
 .form-group select:focus {
   outline: none;
   border-color: #0ea5e9;
-  background: white;
+  background: rgba(248, 250, 252, 0.95);
   box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
 }
 
@@ -190,7 +187,7 @@
   width: 100%;
   padding: 14px 16px;
   margin-top: 14px;
-  background: linear-gradient(135deg, #0ea5e9, #2563eb 70%, #1d4ed8);
+  background: linear-gradient(135deg, var(--accent-cyan), var(--primary) 70%, var(--primary-deep));
   color: white;
   border: none;
   border-radius: 14px;
@@ -224,6 +221,16 @@
   font-size: 14px;
 }
 
+.success-message {
+  background: rgba(236, 253, 245, 0.98);
+  color: #047857;
+  padding: 14px 16px;
+  border-radius: 14px;
+  margin-bottom: 20px;
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  font-size: 14px;
+}
+
 .auth-footer {
   margin-top: 28px;
   padding-top: 18px;
@@ -232,12 +239,10 @@
 }
 
 .auth-footer p {
-  color: #64748b;
+  color: var(--muted);
   font-size: 13px;
   margin: 0;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  font-weight: 600;
 }
 
 .auth-footer .security-badge {
@@ -266,6 +271,8 @@
   border-radius: 14px;
   font-size: 15px;
   background: rgba(248, 250, 252, 0.95);
+  color: #0f172a;
+  caret-color: #0f172a;
 }
 
 .field-icon {
@@ -291,7 +298,7 @@
 .auth-input:focus {
   outline: none;
   border-color: #0ea5e9;
-  background: white;
+  background: rgba(248, 250, 252, 0.95);
   box-shadow: 0 0 0 4px rgba(14, 165, 233, 0.1);
 }
 
@@ -302,10 +309,8 @@
 .auth-link {
   margin-top: 20px;
   text-align: center;
-  color: #64748b;
-  font-weight: 700;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
+  color: var(--muted);
+  font-weight: 600;
 }
 
 .auth-link a {

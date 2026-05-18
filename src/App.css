@@ -1,25 +1,60 @@
 @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
 
 :root {
-  color-scheme: light;
-  --bg: #eef4fb;
-  --bg-deep: #e5edf8;
-  --surface: rgba(255, 255, 255, 0.92);
+  color-scheme: dark;
+  --bg: #0f172a;
+  --bg-deep: #111827;
+  --bg-ink: #1e293b;
+  --surface: rgba(255, 255, 255, 0.95);
+  --surface-soft: rgba(255, 255, 255, 0.9);
   --surface-strong: #ffffff;
-  --border: rgba(148, 163, 184, 0.18);
+  --surface-dark: rgba(8, 17, 31, 0.62);
+  --card-dark: #1e293b;
+  --border: #334155;
+  --border-strong: rgba(203, 213, 225, 0.36);
   --text: #0f172a;
-  --muted: #64748b;
-  --primary: #0ea5e9;
-  --primary-deep: #2563eb;
-  --primary-soft: rgba(14, 165, 233, 0.12);
+  --text-soft: #334155;
+  --text-on-dark: #f8fafc;
+  --text-secondary: #cbd5e1;
+  --muted: #94a3b8;
+  --muted-on-dark: #94a3b8;
+  --primary: #2563eb;
+  --primary-deep: #1e3a8a;
+  --accent-cyan: #06b6d4;
+  --primary-soft: rgba(37, 99, 235, 0.14);
   --success: #10b981;
   --warning: #f59e0b;
   --danger: #ef4444;
-  --shadow-lg: 0 24px 48px rgba(15, 23, 42, 0.12);
-  --shadow-md: 0 14px 30px rgba(15, 23, 42, 0.08);
+  --purple: #8b5cf6;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --shadow-lg: 0 32px 64px rgba(2, 6, 23, 0.34);
+  --shadow-md: 0 16px 34px rgba(2, 6, 23, 0.22);
   --radius-xl: 24px;
   --radius-lg: 18px;
   --radius-md: 12px;
+  --text-h-xl: 40px;
+  --text-h-lg: 32px;
+  --text-h-md: 24px;
+  --text-h-sm: 20px;
+  --text-body-lg: 18px;
+  --text-body-md: 16px;
+  --text-body-sm: 14px;
+  --text-caption: 12px;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
 }
 
 html {
@@ -30,13 +65,15 @@ body {
   margin: 0;
   min-height: 100vh;
   font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-  color: var(--text);
+  color: var(--text-on-dark);
   background:
-    radial-gradient(circle at 15% 20%, rgba(14, 165, 233, 0.22), transparent 24%),
-    radial-gradient(circle at 85% 12%, rgba(37, 99, 235, 0.18), transparent 22%),
-    radial-gradient(circle at 75% 80%, rgba(14, 165, 233, 0.10), transparent 20%),
-    linear-gradient(180deg, #f9fbff 0%, var(--bg) 42%, var(--bg-deep) 100%);
+    radial-gradient(circle at 18% 20%, rgba(14, 165, 233, 0.28), transparent 24%),
+    radial-gradient(circle at 82% 18%, rgba(99, 102, 241, 0.22), transparent 20%),
+    radial-gradient(circle at 50% 85%, rgba(59, 130, 246, 0.16), transparent 24%),
+    linear-gradient(145deg, var(--bg) 0%, var(--bg-deep) 52%, var(--bg-ink) 100%);
   background-attachment: fixed;
+  font-size: var(--text-body-md);
+  line-height: 1.5;
 }
 
 button,
@@ -57,7 +94,8 @@ h4,
 h5,
 h6 {
   font-family: 'Outfit', 'Inter', sans-serif;
-  letter-spacing: -0.02em;
+  letter-spacing: 0;
+  line-height: 1.2;
 }
 
 body::before {
@@ -66,11 +104,11 @@ body::before {
   inset: 0;
   pointer-events: none;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.55) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.55) 1px, transparent 1px);
-  background-size: 72px 72px;
+    linear-gradient(rgba(255, 255, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.08) 1px, transparent 1px);
+  background-size: 80px 80px;
   mask-image: radial-gradient(circle at center, black 45%, transparent 100%);
-  opacity: 0.12;
+  opacity: 0.35;
 }
 
 ::selection {

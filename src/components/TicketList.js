@@ -30,6 +30,14 @@ function TicketList() {
     }).format(date);
   };
 
+  const formatLabel = (value) =>
+    (value || '')
+      .toString()
+      .split(' ')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+
   useEffect(() => {
     if (!currentUser) return undefined;
 
@@ -110,7 +118,7 @@ function TicketList() {
                 <div className="ticket-card-header">
                   <h3>{ticket.title}</h3>
                   <span className="status-badge" style={{ backgroundColor: getStatusColor(ticket.status) }}>
-                    {ticket.status}
+                    {formatLabel(ticket.status)}
                   </span>
                 </div>
 
@@ -129,7 +137,7 @@ function TicketList() {
                     className={`priority-badge priority-${ticket.priority?.toLowerCase() || 'medium'}`}
                     style={{ backgroundColor: getPriorityColor(ticket.priority) }}
                   >
-                    {ticket.priority}
+                    {formatLabel(ticket.priority)}
                   </span>
                   <span className="ticket-date">{formatDate(ticket.createdAt)}</span>
                 </div>

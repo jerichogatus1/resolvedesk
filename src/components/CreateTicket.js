@@ -3,13 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
   db,
-  storage,
   collection,
   addDoc,
   serverTimestamp,
-  ref,
-  uploadBytes,
-  getDownloadURL,
 } from '../firebase';
 import Layout from './Layout';
 import './Ticket.css';
@@ -23,7 +19,6 @@ function CreateTicket() {
     description: '',
     category: 'hardware',
     priority: 'medium',
-    attachment: null,
   });
 
   const [loading, setLoading] = useState(false);
@@ -44,14 +39,6 @@ function CreateTicket() {
     setError('');
 
     try {
-      let attachmentURL = null;
-
-      if (formData.attachment) {
-        const storageRef = ref(storage, `tickets/${Date.now()}_${formData.attachment.name}`);
-        await uploadBytes(storageRef, formData.attachment);
-        attachmentURL = await getDownloadURL(storageRef);
-      }
-
       await addDoc(collection(db, 'tickets'), {
         title: formData.title,
         description: formData.description,
@@ -62,7 +49,7 @@ function CreateTicket() {
         creatorName: currentUser.name,
         creatorEmail: currentUser.email,
         department: currentUser.department,
-        attachmentURL,
+        attachmentURL: null,
         assignedTo: null,
         assignedToName: null,
         comments: [],
@@ -84,15 +71,6 @@ function CreateTicket() {
       ...prev,
       [name]: value,
     }));
-  }
-
-  function handleFileChange(e) {
-    if (e.target.files[0]) {
-      setFormData((prev) => ({
-        ...prev,
-        attachment: e.target.files[0],
-      }));
-    }
   }
 
   return (
@@ -151,12 +129,6 @@ function CreateTicket() {
                 ))}
               </select>
             </div>
-          </div>
-
-          <div className="form-group">
-            <label>Attachment (Optional)</label>
-            <input type="file" onChange={handleFileChange} accept="image/*,.pdf,.doc,.docx" />
-            <small>Supported: Images, PDF, DOC</small>
           </div>
 
           <div className="form-actions">

@@ -49,6 +49,14 @@ function Dashboard() {
     }).format(date);
   };
 
+  const formatLabel = (value) =>
+    (value || '')
+      .toString()
+      .split(' ')
+      .filter(Boolean)
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+      .join(' ');
+
   useEffect(() => {
     if (!currentUser) return undefined;
 
@@ -212,13 +220,13 @@ function Dashboard() {
                             ticket.status === 'in progress' ? 'in-progress' : ticket.status
                           }`}
                         >
-                          {ticket.status}
+                          {formatLabel(ticket.status)}
                         </span>
                       </td>
                       <td>
                         <span className={`priority-indicator priority-${ticket.priority}`}>
                           <span className="priority-dot" />
-                          {ticket.priority}
+                          {formatLabel(ticket.priority)}
                         </span>
                       </td>
                       <td>{formatDate(ticket.createdAt)}</td>
