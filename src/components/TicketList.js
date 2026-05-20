@@ -88,9 +88,11 @@ function TicketList() {
       <div className="ticket-list-container">
         <div className="ticket-list-header">
           <h1>Support Tickets</h1>
-          <Link to="/create-ticket" className="create-ticket-btn">
-            + New Ticket
-          </Link>
+          {userRole !== 'it' && (
+            <Link to="/create-ticket" className="create-ticket-btn">
+              + New Ticket
+            </Link>
+          )}
         </div>
 
         <div className="filter-bar">
@@ -107,9 +109,11 @@ function TicketList() {
         {filteredTickets.length === 0 ? (
           <div className="no-tickets">
             <p>No tickets found</p>
-            <Link to="/create-ticket" className="create-first-ticket">
-              Create your first ticket
-            </Link>
+            {userRole !== 'it' && (
+              <Link to="/create-ticket" className="create-first-ticket">
+                Create your first ticket
+              </Link>
+            )}
           </div>
         ) : (
           <div className="ticket-grid">

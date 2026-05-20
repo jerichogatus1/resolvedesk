@@ -1,8 +1,7 @@
 import React, { useMemo, useState } from 'react';
 import { Link, NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
-import { 
-  FiBell,
+import {
   FiChevronRight,
   FiCompass,
   FiHome, 
@@ -39,14 +38,14 @@ function Layout({ children }) {
       return {
         title: 'Command Center',
         subtitle: 'Live ticket activity, SLA health, and support workload.',
-        crumbs: [{ label: 'Home', to: userRole === 'it' ? '/dashboard' : '/home' }, { label: 'Dashboard' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'Dashboard' }],
       };
     }
     if (path.includes('create-ticket')) {
       return {
         title: 'Create Ticket',
         subtitle: 'Capture a request with the context IT needs to respond quickly.',
-        crumbs: [{ label: 'Home', to: userRole === 'it' ? '/dashboard' : '/home' }, { label: 'New Ticket' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'New Ticket' }],
       };
     }
     if (path.includes('/ticket/')) {
@@ -54,7 +53,7 @@ function Layout({ children }) {
         title: 'Ticket Detail',
         subtitle: 'Timeline, ownership, SLA health, and conversation history.',
         crumbs: [
-          { label: 'Home', to: userRole === 'it' ? '/dashboard' : '/home' },
+          { label: 'Home', to: '/home' },
           { label: 'Tickets', to: '/tickets' },
           { label: 'Detail' },
         ],
@@ -64,35 +63,35 @@ function Layout({ children }) {
       return {
         title: 'Ticket Queue',
         subtitle: userRole === 'it' ? 'Triage and manage every active request.' : 'Track your submitted requests.',
-        crumbs: [{ label: 'Home', to: userRole === 'it' ? '/dashboard' : '/home' }, { label: 'Tickets' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'Tickets' }],
       };
     }
     if (path.includes('admin/create-user')) {
       return {
         title: 'User Management',
         subtitle: 'Provision IT and employee access for ResolveDesk.',
-        crumbs: [{ label: 'Home', to: '/dashboard' }, { label: 'Admin' }, { label: 'Users' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'Admin' }, { label: 'Users' }],
       };
     }
     if (path.includes('admin/users')) {
       return {
         title: 'Account Management',
         subtitle: 'Review registered users and their submitted ticket history.',
-        crumbs: [{ label: 'Home', to: '/dashboard' }, { label: 'Admin' }, { label: 'Accounts' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'Admin' }, { label: 'Accounts' }],
       };
     }
     if (path.includes('admin')) {
       return {
         title: 'IT Dashboard',
         subtitle: 'Administrative controls and queue oversight.',
-        crumbs: [{ label: 'Home', to: '/dashboard' }, { label: 'Admin' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'Admin' }],
       };
     }
     if (path.includes('change-password')) {
       return {
         title: 'Change Password',
         subtitle: 'Update your account password',
-        crumbs: [{ label: 'Home', to: userRole === 'it' ? '/dashboard' : '/home' }, { label: 'Change Password' }],
+        crumbs: [{ label: 'Home', to: '/home' }, { label: 'Change Password' }],
       };
     }
     return {
@@ -136,7 +135,7 @@ function Layout({ children }) {
 
         <div className="sidebar-home-link-wrap">
           <NavLink
-            to={userRole === 'it' ? '/dashboard' : '/home'}
+            to="/home"
             end
             onClick={closeMobileSidebar}
             className={({ isActive }) =>
@@ -174,15 +173,17 @@ function Layout({ children }) {
                 </NavLink>
               </li>
             )}
-            <li>
-              <NavLink
-                to="/create-ticket"
-                onClick={closeMobileSidebar}
-                className={({ isActive }) => (isActive ? 'active' : undefined)}
-              >
-                <FiPlusCircle /> <span>Create Ticket</span>
-              </NavLink>
-            </li>
+            {userRole !== 'it' && (
+              <li>
+                <NavLink
+                  to="/create-ticket"
+                  onClick={closeMobileSidebar}
+                  className={({ isActive }) => (isActive ? 'active' : undefined)}
+                >
+                  <FiPlusCircle /> <span>Create Ticket</span>
+                </NavLink>
+              </li>
+            )}
             <li>
               <NavLink
                 to="/tickets"
@@ -267,13 +268,11 @@ function Layout({ children }) {
             </div>
           </div>
           <div className="top-actions">
-            <Link to="/create-ticket" className="quick-action-btn">
-              <FiPlusCircle /> <span>New Ticket</span>
-            </Link>
-            <button type="button" className="notification-btn" aria-label="Notifications">
-              <FiBell />
-              <span className="notification-dot" aria-hidden="true" />
-            </button>
+            {userRole !== 'it' && (
+              <Link to="/create-ticket" className="quick-action-btn">
+                <FiPlusCircle /> <span>New Ticket</span>
+              </Link>
+            )}
           </div>
         </div>
         <div className="content-wrapper">

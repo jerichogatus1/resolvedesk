@@ -24,10 +24,10 @@ import {
 import { FaLinkedinIn, FaXTwitter } from 'react-icons/fa6';
 
 const stats = [
-  { value: '500+', label: 'Clients', icon: FiUsers },
+  { value: '100+', label: 'Clients', icon: FiUsers },
   { value: '24/7', label: 'Operations', icon: FiClock },
   { value: '99%', label: 'Satisfaction', icon: FiCheckCircle },
-  { value: '50+', label: 'IT Specialists', icon: FiMonitor },
+  { value: 'IT', label: 'Specialists', icon: FiMonitor },
 ];
 
 const services = [
@@ -159,7 +159,7 @@ function Home() {
             </p>
             <div className="mt-5 flex flex-wrap gap-3">
               <Link
-                to="/create-ticket"
+                to={currentUser ? (isIT ? '/dashboard' : '/create-ticket') : '/login'}
                 className="rounded-full bg-gradient-to-r from-[#06B6D4] to-[#2563EB] px-5 py-2.5 text-sm font-semibold text-white transition hover:-translate-y-0.5"
               >
                 Get Started
@@ -261,11 +261,11 @@ function Home() {
               <p className="mt-1">Premium BPO and IT Helpdesk Solutions</p>
             </div>
             <div className="flex items-center gap-3">
-              <a href="mailto:support@resolvedesk.com" className="inline-flex items-center gap-2 hover:text-cyan-300">
-                <FiMail /> support@resolvedesk.com
+              <a href="mailto:jcgatus.student@ua.edu.ph" className="inline-flex items-center gap-2 hover:text-cyan-300">
+                <FiMail /> jcgatus.student@ua.edu.ph
               </a>
               <span className="inline-flex items-center gap-2">
-                <FiPhone /> +1 (800) 555-0199
+                <FiPhone /> +639757231318
               </span>
             </div>
             <div className="flex items-center justify-between sm:justify-end sm:gap-3">

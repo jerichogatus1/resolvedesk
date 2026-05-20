@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { FiLock, FiMail, FiShield } from 'react-icons/fi';
@@ -9,8 +9,14 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const { login, currentUser } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser) {
+      navigate('/home');
+    }
+  }, [currentUser, navigate]);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,7 +25,7 @@ function Login() {
       setError('');
       setLoading(true);
       await login(email, password);
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       setError('Invalid email or password');
     } finally {

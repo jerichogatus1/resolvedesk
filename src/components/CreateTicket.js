@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Navigate, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import {
   db,
@@ -11,8 +11,14 @@ import Layout from './Layout';
 import './Ticket.css';
 
 function CreateTicket() {
-  const { currentUser } = useAuth();
+  const { currentUser, userRole } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    if (currentUser && userRole === 'it') {
+      navigate('/dashboard', { replace: true });
+    }
+  }, [currentUser, userRole, navigate]);
 
   const [formData, setFormData] = useState({
     title: '',

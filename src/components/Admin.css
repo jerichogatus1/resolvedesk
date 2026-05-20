@@ -65,6 +65,23 @@
   transition: all 0.25s ease;
 }
 
+.admin-form-card .form-group select {
+  color: var(--text-secondary) !important;
+}
+
+#ticket-status-filter,
+.admin-form-card .account-tickets-box .form-group select {
+  background: #2563eb !important;
+  color: #fff !important;
+  border-color: #1d4ed8 !important;
+}
+
+#ticket-status-filter option,
+.admin-form-card .account-tickets-box .form-group select option {
+  background: #2563eb !important;
+  color: #fff !important;
+}
+
 .admin-form .form-group input:focus,
 .admin-form .form-group select:focus {
   outline: none;

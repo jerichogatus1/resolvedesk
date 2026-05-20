@@ -191,17 +191,23 @@ function Dashboard() {
             <div className="no-tickets">
               <div className="no-tickets-icon">Tickets</div>
               <h3>No tickets yet</h3>
-              <p>Create your first support ticket to get started</p>
-              <Link to="/create-ticket" className="create-first-ticket">
-                <FiPlusCircle /> Create Your First Ticket
-              </Link>
+              <p>
+                {userRole === 'it'
+                  ? 'No tickets are currently assigned to your team.'
+                  : 'Create your first support ticket to get started'}
+              </p>
+              {userRole !== 'it' && (
+                <Link to="/create-ticket" className="create-first-ticket">
+                  <FiPlusCircle /> Create Your First Ticket
+                </Link>
+              )}
             </div>
           ) : (
             <div className="tickets-table">
               <table>
                 <thead>
                   <tr>
-                    <th>ID</th>
+                    <th>Submitted By</th>
                     <th>Title</th>
                     <th>Status</th>
                     <th>Priority</th>
@@ -212,7 +218,7 @@ function Dashboard() {
                 <tbody>
                   {recentTickets.map((ticket) => (
                     <tr key={ticket.id}>
-                      <td>#{ticket.id.slice(-6).toUpperCase()}</td>
+                      <td>{ticket.creatorName || ticket.creatorEmail || 'Unknown'}</td>
                       <td>{ticket.title}</td>
                       <td>
                         <span
