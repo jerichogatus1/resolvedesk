@@ -23,8 +23,9 @@ import {
   setDoc,
 } from 'firebase/firestore';
 import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import { getFunctions, connectFunctionsEmulator } from 'firebase/functions';
 
-const firebaseConfig = {
+export const firebaseConfig = {
   apiKey: 'AIzaSyC9J46B3Nv1j8Lt8DMeC30PtqEfts5SpdA',
   authDomain: 'resolvedesk-af26e.firebaseapp.com',
   projectId: 'resolvedesk-af26e',
@@ -37,6 +38,13 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+const functions = getFunctions(app, 'us-central1');
+
+// Opt-in emulator usage to avoid localhost connection errors when emulator is not running.
+const useFunctionsEmulator = process.env.REACT_APP_USE_FUNCTIONS_EMULATOR === 'true';
+if (useFunctionsEmulator) {
+  connectFunctionsEmulator(functions, 'localhost', 5001);
+}
 
 export {
   auth,
@@ -62,6 +70,7 @@ export {
   ref,
   uploadBytes,
   getDownloadURL,
+  functions,
 };
 
 export default app;

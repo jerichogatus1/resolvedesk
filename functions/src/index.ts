@@ -6,7 +6,7 @@ setGlobalOptions({ maxInstances: 10 });
 
 admin.initializeApp();
 
-export const createUserAccount = onCall({ cors: true }, async (request) => {
+export const createUserAccount = onCall({ cors: true, invoker: 'public' }, async (request) => {
   const callerEmail = request.auth?.token?.email;
 
   if (!request.auth || callerEmail !== 'master@admin.com') {
@@ -19,28 +19,38 @@ export const createUserAccount = onCall({ cors: true }, async (request) => {
     throw new HttpsError('invalid-argument', 'Missing required user fields.');
   }
 
-  const userRecord = await admin.auth().createUser({
-    email,
-    password,
-    displayName: name,
-  });
+  try {
+    const userRecord = await admin.auth().createUser({
+      email,
+      password,
+      displayName: name,
+    });
 
-  await admin.firestore().collection('users').doc(userRecord.uid).set({
-    email,
-    role,
-    department,
-    name,
-    createdAt: admin.firestore.FieldValue.serverTimestamp(),
-    createdBy: callerEmail,
-  });
+    await admin.firestore().collection('users').doc(userRecord.uid).set({
+      email,
+      role,
+      department,
+      name,
+      createdAt: admin.firestore.FieldValue.serverTimestamp(),
+      createdBy: callerEmail,
+    });
 
-  return {
-    uid: userRecord.uid,
-    email,
-  };
+    return {
+      uid: userRecord.uid,
+      email,
+    };
+  } catch (error: any) {
+    console.error('createUserAccount error:', error);
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    const message = error?.message || 'Internal error creating user account.';
+    const code = error?.code === 'auth/email-already-exists' ? 'already-exists' : 'internal';
+    throw new HttpsError(code, message);
+  }
 });
 
-export const resetUserPassword = onCall({ cors: true }, async (request) => {
+export const resetUserPassword = onCall({ cors: true, invoker: 'public' }, async (request) => {
   const callerEmail = request.auth?.token?.email;
 
   if (!request.auth) {
@@ -60,19 +70,28 @@ export const resetUserPassword = onCall({ cors: true }, async (request) => {
     throw new HttpsError('invalid-argument', 'Target user UID is required.');
   }
 
-  await admin.auth().updateUser(uid, { password: 'rsd123' });
+  try {
+    await admin.auth().updateUser(uid, { password: 'rsd123' });
 
-  await admin.firestore().collection('users').doc(uid).set(
-    {
-      passwordResetAt: admin.firestore.FieldValue.serverTimestamp(),
-      passwordResetBy: callerEmail,
+    await admin.firestore().collection('users').doc(uid).set(
+      {
+        passwordResetAt: admin.firestore.FieldValue.serverTimestamp(),
+        passwordResetBy: callerEmail,
+        temporaryPassword: 'rsd123',
+      },
+      { merge: true }
+    );
+
+    return {
+      uid,
       temporaryPassword: 'rsd123',
-    },
-    { merge: true }
-  );
-
-  return {
-    uid,
-    temporaryPassword: 'rsd123',
-  };
+    };
+  } catch (error: any) {
+    console.error('resetUserPassword error:', error);
+    if (error instanceof HttpsError) {
+      throw error;
+    }
+    const message = error?.message || 'Internal error resetting password.';
+    throw new HttpsError('internal', message);
+  }
 });

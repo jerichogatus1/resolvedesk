@@ -1,11 +1,10 @@
 import React, { useState } from 'react';
+import { initializeApp, deleteApp } from 'firebase/app';
+import { getAuth, createUserWithEmailAndPassword, deleteUser, updateProfile } from 'firebase/auth';
 import { useAuth } from '../contexts/AuthContext';
-import app from '../firebase';
-import { getFunctions, httpsCallable } from 'firebase/functions';
+import { db, doc, firebaseConfig, serverTimestamp, setDoc } from '../firebase';
 import Layout from './Layout';
 import './Admin.css';
-
-const functions = getFunctions(app);
 
 function AdminCreateUser() {
   const { currentUser } = useAuth();
@@ -40,15 +39,42 @@ function AdminCreateUser() {
     setSuccess('');
 
     try {
-      const createUserAccount = httpsCallable(functions, 'createUserAccount');
-      await createUserAccount({
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-        department: formData.department,
-        name: formData.name,
-        createdBy: currentUser.email,
-      });
+      const secondaryApp = initializeApp(firebaseConfig, `create-user-${Date.now()}`);
+      const secondaryAuth = getAuth(secondaryApp);
+      let createdUser = null;
+
+      try {
+        const userCredential = await createUserWithEmailAndPassword(
+          secondaryAuth,
+          formData.email,
+          formData.password
+        );
+        createdUser = userCredential.user;
+
+        await updateProfile(createdUser, {
+          displayName: formData.name,
+        });
+
+        await setDoc(doc(db, 'users', createdUser.uid), {
+          email: formData.email,
+          role: formData.role,
+          department: formData.department,
+          name: formData.name,
+          createdAt: serverTimestamp(),
+          createdBy: currentUser.email,
+        });
+      } catch (createError) {
+        if (createdUser) {
+          try {
+            await deleteUser(createdUser);
+          } catch (deleteError) {
+            console.error('Failed to roll back created auth user:', deleteError);
+          }
+        }
+        throw createError;
+      } finally {
+        await deleteApp(secondaryApp);
+      }
 
       setSuccess(`User ${formData.name} created successfully!`);
       setFormData({
@@ -59,7 +85,8 @@ function AdminCreateUser() {
         department: '',
       });
     } catch (err) {
-      setError('Failed to create user: ' + err.message);
+      const errorMessage = err?.code ? `${err.code} - ${err.message}` : err.message;
+      setError('Failed to create user: ' + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -106,6 +133,7 @@ function AdminCreateUser() {
                 id="name"
                 type="text"
                 name="name"
+                autoComplete="name"
                 value={formData.name}
                 onChange={handleChange}
                 required
@@ -119,6 +147,7 @@ function AdminCreateUser() {
                 id="email"
                 type="email"
                 name="email"
+                autoComplete="email"
                 value={formData.email}
                 onChange={handleChange}
                 required
@@ -132,6 +161,7 @@ function AdminCreateUser() {
                 id="password"
                 type="password"
                 name="password"
+                autoComplete="new-password"
                 value={formData.password}
                 onChange={handleChange}
                 required
